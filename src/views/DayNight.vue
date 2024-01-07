@@ -146,10 +146,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import myGsap from '../utils/myGsap';
+import myGsap from '../utils/myGsap/index';
 import { pointsList } from '../constant/datNight';
 
-const day = ref(null);
+const day = ref<HTMLElement | null>(null);
 const night = ref(null);
 const moon = ref(null);
 const stars = ref(null);
@@ -157,7 +157,7 @@ const sun = ref(null);
 const cloud = ref(null);
 
 onMounted(() => {
-  myGsap.to(day, 1, {});
+  myGsap.set(day, { x: 150, y: 0 });
   // setStyle([sun, stars], { opacity: 0 });
   // setStyle([sun, cloud, moon], { x: 15 });
   // setStyle([stars], { x: 35, y: -5 });
@@ -235,3 +235,4 @@ svg {
   }
 }
 </style>
+../utils/myGsap/myGsap../utils/myGsap/myGsap

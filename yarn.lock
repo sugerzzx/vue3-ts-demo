@@ -438,6 +438,11 @@ glob-parent@~5.1.2:
   dependencies:
     is-glob "^4.0.1"
 
+gsap@^3.12.4:
+  version "3.12.4"
+  resolved "https://registry.npmmirror.com/gsap/-/gsap-3.12.4.tgz#b9383fe16bb14968e2c7db2a7c0e308edf551e7b"
+  integrity sha512-1ByAq8dD0W4aBZ/JArgaQvc0gyUfkGkP8mgAQa0qZGdpOKlSOhOf+WNXjoLimKaKG3Z4Iu6DKZtnyszqQeyqWQ==
+
 he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npmmirror.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"

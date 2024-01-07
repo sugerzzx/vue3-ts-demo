@@ -12,6 +12,10 @@ const routes = [
   {
     path: '/dayNight',
     component: () => import('../views/DayNight.vue')
+  },
+  {
+    path: '/Gsap',
+    component: () => import('../views/Gsap.vue')
   }
 ];
 

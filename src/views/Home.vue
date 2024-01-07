@@ -1,6 +1,7 @@
 <template>
   <router-link to="/colorSelector">ColorSelector</router-link>
   <router-link to="/dayNight">DayNight</router-link>
+  <router-link to="/gsap">Gsap</router-link>
 </template>
 
 <script setup lang="ts">

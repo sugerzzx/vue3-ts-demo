@@ -7,18 +7,21 @@
 <script setup lang="ts">
 import gsap from 'gsap';
 import myGsap from '../utils/myGsap/index';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, ComponentPublicInstance } from 'vue';
 
-const box1 = ref(null);
+const box1 = ref<ComponentPublicInstance | null>(null);
 
 onMounted(() => {
-  // gsap.set(box1.value, {
-  //   x: 100, y: 100,
-  //   scale: 4,
-  //   // scaleY: 2,
-  //   // scaleX: 2,
-  // });
-  myGsap.set(box1.value, { x: 100, y: 100, scaleY: 4, scaleX: 4, scale: 6 });
+  gsap.set(box1.value, {
+    x: 100, y: 100,
+    scale: 4,
+    abc: 123
+    // scaleY: 2,
+    // scaleX: 2,
+  });
+  // const ele = document.querySelector('translate') as HTMLElement;
+  // ele.sty
+  // myGsap.set(box1.value, { x: 100, y: 100, scaleY: 4, scaleX: 4, sc });
 });
 
 </script>

@@ -12,51 +12,51 @@ function handleElement(element: elementType, callBack: (ele: HTMLElement, ...arg
   }
 };
 
-function getOldStyle(ele: HTMLElement) {
-  const oldStyle = getComputedStyle(ele);
-  const { transform, translate, rotate, scale } = oldStyle;
+function getPreStyle(ele: HTMLElement) {
+  const preStyle = getComputedStyle(ele);
+  const { transform, translate, rotate, scale } = preStyle;
   const matrix = transform.match(/matrix\(([^)]+)\)/)?.pop()?.split(', ').map(Number) || [1, 0, 0, 1, 0, 0];
 
-  const [oldX, oldY, oldA, oldB] = matrix.slice(4);
+  const [preX, preY, preA, preB] = matrix.slice(4);
 
-  const oldRotateFromMatrix = Math.atan2(matrix[1], matrix[0]) * 180 / Math.PI;
-  const oldRotateFromStyle = Number(rotate.match(/(\d+)deg/)?.[1]) || 0;
-  const oldRotate = oldRotateFromStyle + oldRotateFromMatrix;
+  const preRotateFromMatrix = Math.atan2(matrix[1], matrix[0]) * 180 / Math.PI;
+  const preRotateFromStyle = Number(rotate.match(/(\d+)deg/)?.[1]) || 0;
+  const preRotate = preRotateFromStyle + preRotateFromMatrix;
 
-  const oldScaleFromMatrixX = Math.sqrt(matrix[0] ** 2 + matrix[1] ** 2);
-  const oldScaleFromMatrixY = Math.sqrt(matrix[2] ** 2 + matrix[3] ** 2);
-  const oldScaleFromStyleX = scale === 'none' ? 1 : Number(scale.split(', ')[0]);
-  const oldScaleFromStyleY = scale === 'none' ? 1 : Number(scale.split(', ')[1] || oldScaleFromStyleX);
-  const oldScale = [oldScaleFromStyleX * oldScaleFromMatrixX, oldScaleFromStyleY * oldScaleFromMatrixY];
+  const preScaleFromMatrixX = Math.sqrt(matrix[0] ** 2 + matrix[1] ** 2);
+  const preScaleFromMatrixY = Math.sqrt(matrix[2] ** 2 + matrix[3] ** 2);
+  const preScaleFromStyleX = scale === 'none' ? 1 : Number(scale.split(', ')[0]);
+  const preScaleFromStyleY = scale === 'none' ? 1 : Number(scale.split(', ')[1] || preScaleFromStyleX);
+  const preScale = [preScaleFromStyleX * preScaleFromMatrixX, preScaleFromStyleY * preScaleFromMatrixY];
   return {
-    oldX,
-    oldY,
-    oldA,
-    oldB,
-    oldRotate,
-    oldScale,
+    preX,
+    preY,
+    preA,
+    preB,
+    preRotate,
+    preScale,
     translate,
   };
 }
 
-function getScale(scale: numOrStrOrUn, scaleX: numOrStrOrUn, scaleY: numOrStrOrUn, oldScale: number[]) {
+function getScale(scale: numOrStrOrUn, scaleX: numOrStrOrUn, scaleY: numOrStrOrUn, preScale: number[]) {
   let _scale: undefined | (string | number)[] = void 0;
   if (scale || scaleX || scaleY) {
-    _scale = [scaleX || scale || oldScale[0], scaleY || scale || oldScale[1]];
-  } else if (oldScale.join(',') !== '1,1') {
-    _scale = oldScale;
+    _scale = [scaleX || scale || preScale[0], scaleY || scale || preScale[1]];
+  } else if (preScale.join(',') !== '1,1') {
+    _scale = preScale;
   }
   return _scale ? `scale(${_scale.join(', ')})` : void 0;
 }
 
 function setStyle(ele: HTMLElement, setoption: setOptionType) {
   const { x, y, rotate, scale, scaleX, scaleY, opacity } = setoption;
-  const { oldX, oldY, oldRotate, oldA, oldB, oldScale } = getOldStyle(ele);
+  const { preX, preY, preRotate, preA, preB, preScale } = getPreStyle(ele);
 
   if (ele instanceof SVGElement) {
-    const a = rotate ? Math.cos(Number(rotate) * Math.PI / 180) : oldA;
-    const b = rotate ? Math.sin(Number(rotate) * Math.PI / 180) : oldB;
-    ele.setAttribute('transform', `matrix(${a},${b},${-b},${a},${x || oldX},${y || oldY})`);
+    const a = rotate ? Math.cos(Number(rotate) * Math.PI / 180) : preA;
+    const b = rotate ? Math.sin(Number(rotate) * Math.PI / 180) : preB;
+    ele.setAttribute('transform', `matrix(${a},${b},${-b},${a},${x || preX},${y || preY})`);
   }
 
   const style = ele.style;
@@ -64,9 +64,9 @@ function setStyle(ele: HTMLElement, setoption: setOptionType) {
   style.rotate = 'none';
   style.scale = 'none';
 
-  const translate = x || y ? `translate(${x || oldX}px, ${y || oldY}px)` : '';
-  const _rotate = rotate || oldRotate ? `rotate(${rotate || oldRotate}deg)` : '';
-  const _scale = getScale(scale, scaleX, scaleY, oldScale);
+  const translate = x || y ? `translate(${x || preX}px, ${y || preY}px)` : '';
+  const _rotate = rotate || preRotate ? `rotate(${rotate || preRotate}deg)` : '';
+  const _scale = getScale(scale, scaleX, scaleY, preScale);
 
   style.transform = `${translate} ${_rotate} ${_scale}`;
   if (opacity) style.opacity = `${opacity}`;

@@ -14,8 +14,12 @@ const routes = [
     component: () => import('../views/DayNight.vue')
   },
   {
-    path: '/Gsap',
+    path: '/gsap',
     component: () => import('../views/Gsap.vue')
+  },
+  {
+    path: '/testScss',
+    component: () => import('../views/TestScss.vue')
   }
 ];
 
